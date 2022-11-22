@@ -1,34 +1,70 @@
 'use strict';
 
-const movieDB = {
-    movies: [
-        "Логан",
-        "Лига справедливости",
-        "Ла-ла лэнд",
-        "Одержимость",
-        "Скотт Пилигрим против..."
-    ]
-};
+document.addEventListener('DOMContentLoaded', () => {
 
-const adv = document.querySelectorAll('.promo__adv img'),
-      poster = document.querySelector('.promo__bg'),
-      genre = poster.querySelector('.promo__genre'),
-      movieList = document.querySelector('.promo__interactive-list');
+    const movieDB = {
+        movies: [
+            "Логан",
+            "Лига справедливости",
+            "Ла-ла лэнд",
+            "Одержимость",
+            "Скотт Пилигрим против..."
+        ]
+    };
+    
+    const adv = document.querySelectorAll('.promo__adv img'),
+          poster = document.querySelector('.promo__bg'),
+          genre = poster.querySelector('.promo__genre'),
+          movieList = document.querySelector('.promo__interactive-list'), 
+          addForm = document.querySelector('form.add'),
+          addInput = addForm.querySelector('.adding__input'),
+          checkbox = addForm.querySelector('[type="checkbox"]');
 
-adv.forEach(item => item.remove());
+    addForm.addEventListener('submit', (event) => {
+        event.preventDefault();
 
-genre.textContent = 'драма';
+        const newFilm = addInput.value;
+        const favorite = checkbox.checked;
 
-poster.style.backgroundImage = 'url("img/bg.jpg")';
+        if (newFilm) {
+            movieDB.movies.push(newFilm);
+            sortArr(movieDB.movies);
 
-movieList.innerHTML = '';
+            creatMovieList(movieDB.movies, movieList);
+        } 
 
-movieDB.movies.sort();
+        event.target.reset();
+    });
+    
+    const deleteAdv = (arr) => {
+        arr.forEach(item => item.remove());
+    };
+    
+    const makeChanges = () => {
+        genre.textContent = 'драма';
+    
+        poster.style.backgroundImage = 'url("img/bg.jpg")';
+    };
 
-movieDB.movies.forEach((film, i) => {
-    movieList.innerHTML += `
-        <li class="promo__interactive-item">${i + 1}. ${film}
-            <div class="delete"></div>
-        </li>
-    `;
+    const sortArr = (arr) => {
+        arr.sort();
+    };
+
+    function creatMovieList(films, parent) {
+        parent.innerHTML = '';
+
+        films.forEach((film, i) => {
+            parent.innerHTML += `
+                <li class="promo__interactive-item">${i + 1}. ${film}
+                    <div class="delete"></div>
+                </li>
+            `;
+        });
+    }
+
+    deleteAdv(adv);
+    makeChanges();
+    sortArr(movieDB.movies);
+    creatMovieList(movieDB.movies, movieList);
+
 });
