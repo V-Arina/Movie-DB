@@ -31,6 +31,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 newFilm = `${newFilm.substring(0, 22)}...`;
             }
 
+            if (favorite) {
+                console.log("Добавлен любимый фильм");
+            }
+
             movieDB.movies.push(newFilm);
             sortArr(movieDB.movies);
 
